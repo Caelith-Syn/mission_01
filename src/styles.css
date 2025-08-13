@@ -121,10 +121,19 @@ body {
 
 .upload-controls {
   margin-top: 0.75rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
 }
 #car-image {
   display: none;
+} /* label[for=car-image] is the visible trigger */
+
+.btn-action[disabled] {
+  opacity: 0.6;
+  pointer-events: none;
 }
+
 .btn-reset {
   margin-left: 0.75rem;
 }
@@ -148,6 +157,23 @@ body {
 }
 .preview-meta {
   margin-top: 0.5rem;
+}
+
+.result-card {
+  margin-top: 0.5rem;
+  border: 1px solid var(--pacific-cyan);
+  border-radius: 6px;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.08);
+}
+.result-line {
+  margin: 0.25rem 0;
+}
+.result-label {
+  opacity: 0.9;
+}
+.result-placeholder {
+  opacity: 0.9;
 }
 
 /* Responsive Styles */

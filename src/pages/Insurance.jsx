@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
+import { classifyImage } from "../lib/vision";
 
 export default function Insurance() {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [error, setError] = useState(null);
 
+  // classification-related state
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
+
   // revoke object URL when file changes/unmounts
   useEffect(() => {
-    // Cleanup runs when previewUrl changes or component unmounts
     return function cleanup() {
       if (previewUrl) {
         URL.revokeObjectURL(previewUrl);
@@ -18,6 +22,7 @@ export default function Insurance() {
   function onSelect(e) {
     const file = e.target.files?.[0];
     setError(null);
+    setResult(null); // clear previous result when a new file is chosen
 
     if (!file) return;
 
@@ -29,7 +34,7 @@ export default function Insurance() {
       return;
     }
     if (file.size > maxMB * 1024 * 1024) {
-      setError(`Image is too large (>${maxMB}MB).`);
+      setError(`Image too large (>${maxMB}MB).`);
       return;
     }
 
@@ -44,6 +49,32 @@ export default function Insurance() {
     setFile(null);
     setPreviewUrl(null);
     setError(null);
+    setResult(null);
+    setLoading(false);
+  }
+
+  async function onClassify() {
+    // guard: require a file
+    if (!file) {
+      setError("Please choose an image before classifying.");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setResult(null);
+
+    try {
+      // call Azure Custom Vision
+      const r = await classifyImage(file);
+      setResult(r); // { label, score, raw }
+    } catch (err) {
+      // user-friendly error
+      const msg = err?.message || "Classification failed.";
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -66,9 +97,18 @@ export default function Insurance() {
             onChange={onSelect}
           />
           {file && (
-            <button className="btn btn-reset" onClick={onReset}>
-              Reset
-            </button>
+            <>
+              <button
+                className="btn btn-action"
+                onClick={onClassify}
+                disabled={loading}
+              >
+                {loading ? "Analyzing…" : "Classify"}
+              </button>
+              <button className="btn btn-reset" onClick={onReset}>
+                Reset
+              </button>
+            </>
           )}
         </div>
 
@@ -90,13 +130,28 @@ export default function Insurance() {
         )}
       </div>
 
-      {/* Right: placeholder for coverage/result */}
+      {/* Right: Coverage & Result */}
       <div className="panel">
         <h2>Coverage & Result</h2>
-        <p>
-          Coverage tabs, classification, and premium placeholder will appear
-          here.
-        </p>
+
+        {/* Result block appears only when we have a classification */}
+        {result ? (
+          <div className="result-card">
+            <p className="result-line">
+              <span className="result-label">Type:</span>{" "}
+              <strong>{result.label}</strong>
+            </p>
+            <p className="result-line">
+              <span className="result-label">Confidence:</span>{" "}
+              <strong>{(result.score * 100).toFixed(1)}%</strong>
+            </p>
+          </div>
+        ) : (
+          <p className="result-placeholder">
+            Coverage tabs, classification, and premium placeholder will appear
+            here.
+          </p>
+        )}
       </div>
     </section>
   );
