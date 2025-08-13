@@ -1,0 +1,127 @@
+/* Basic reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+:root {
+  --federal-blue: #03045eff;
+  --honolulu-blue: #0077b6ff;
+  --pacific-cyan: #00b4d8ff;
+  --non-photo-blue: #90e0efff;
+  --light-cyan: #caf0f8ff;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--federal-blue);
+  color: var(--light-cyan);
+  line-height: 1.5;
+}
+
+/* Container to center content */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.header {
+  border-bottom: 1px solid var(--honolulu-blue);
+  padding: 1rem 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--non-photo-blue);
+}
+
+.nav a {
+  margin-left: 1rem;
+  text-decoration: none;
+  color: var(--light-cyan);
+}
+
+/* Highlight active nav link */
+.nav a.active {
+  color: var(--pacific-cyan);
+  font-weight: bold;
+}
+
+.nav a:hover,
+.nav a:focus {
+  text-decoration: underline;
+}
+
+.hero {
+  text-align: center;
+  padding: 4rem 0;
+  background: var(--non-photo-blue);
+  color: var(--federal-blue);
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--pacific-cyan);
+  border-radius: 6px;
+  text-decoration: none;
+  background: var(--honolulu-blue);
+  color: var(--light-cyan);
+}
+
+.btn:hover,
+.btn:focus {
+  filter: brightness(1.05);
+}
+
+.footer {
+  border-top: 1px solid var(--honolulu-blue);
+  padding: 1rem 0;
+  color: var(--pacific-cyan);
+  text-align: center;
+  background: var(--federal-blue);
+}
+
+/* Insurance Page Panel Container */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 2rem 0;
+}
+
+/* Insurance Page Panels */
+.panel {
+  background-color: var(--honolulu-blue);
+  border: 1px solid var(--pacific-cyan);
+  border-radius: 8px;
+  padding: 1rem;
+  color: var(--light-cyan);
+}
+
+/* Responsive Styles */
+@media (max-width: 900px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
