@@ -176,6 +176,34 @@ body {
   opacity: 0.9;
 }
 
+/* tabs */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0.75rem;
+}
+.tab {
+  border: 1px solid var(--pacific-cyan);
+  background: transparent;
+  color: var(--light-cyan);
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.tab.active {
+  background: var(--pacific-cyan);
+  color: var(--federal-blue);
+}
+
+/* coverage copy and result */
+.coverage-copy {
+  margin: 0.25rem 0 0.75rem;
+}
+.muted {
+  opacity: 0.7;
+  margin-left: 0.25rem;
+}
+
 /* Responsive Styles */
 @media (max-width: 900px) {
   .grid-2 {

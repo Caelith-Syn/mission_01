@@ -1,6 +1,49 @@
 import { useState, useEffect } from "react";
 import { classifyImage } from "../lib/vision";
 
+// coverage types and copy shown in the UI
+const COVERAGE_COPY = {
+  comprehensive:
+    "Full cover for accidental damage, theft, fire, and third-party liability.",
+  fireTheft: "Covers fire and theft, plus third-party liability.",
+  thirdParty: "Covers damage you cause to others’ vehicles/property.",
+};
+
+// basic mapping from detected type → base monthly premium (placeholder logic only)
+function estimatePremium(label) {
+  if (!label) return null;
+  const key = String(label).toLowerCase();
+
+  // crude buckets to demonstrate flow; adjust as you like
+  const table = {
+    sedan: 110,
+    hatchback: 95,
+    coupe: 120,
+    suv: 140,
+    wagon: 115,
+    truck: 160,
+    ute: 150,
+    van: 135,
+  };
+
+  // default if we don't recognize the tag name
+  const base = table[key] ?? 125;
+
+  // confidence modifier: ±10% range based on certainty
+  // e.g., 0.9 → +9%; 0.5 → +5%
+  return base;
+}
+
+function formatNZD(amount) {
+  return amount == null
+    ? "-"
+    : new Intl.NumberFormat("en-NZ", {
+        style: "currency",
+        currency: "NZD",
+        maximumFractionDigits: 0,
+      }).format(amount);
+}
+
 export default function Insurance() {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -9,6 +52,7 @@ export default function Insurance() {
   // classification-related state
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [coverageType, setCoverageType] = useState("comprehensive");
 
   // revoke object URL when file changes/unmounts
   useEffect(() => {
@@ -19,8 +63,8 @@ export default function Insurance() {
     };
   }, [previewUrl]);
 
-  function onSelect(e) {
-    const file = e.target.files?.[0];
+  function onSelect(event) {
+    const file = event.target.files?.[0];
     setError(null);
     setResult(null); // clear previous result when a new file is chosen
 
@@ -66,16 +110,18 @@ export default function Insurance() {
 
     try {
       // call Azure Custom Vision
-      const r = await classifyImage(file);
-      setResult(r); // { label, score, raw }
-    } catch (err) {
-      // user-friendly error
-      const msg = err?.message || "Classification failed.";
+      const result = await classifyImage(file);
+      setResult(result); // { label, score, raw }
+    } catch (error) {
+      const msg = error?.message || "Classification failed.";
       setError(msg);
     } finally {
       setLoading(false);
     }
   }
+
+  // derive premium once we have a label
+  const premium = estimatePremium(result?.label);
 
   return (
     <section className="grid-2">
@@ -134,6 +180,35 @@ export default function Insurance() {
       <div className="panel">
         <h2>Coverage & Result</h2>
 
+        {/* Coverage tabs */}
+        <div className="tabs">
+          <button
+            className={`tab ${
+              coverageType === "comprehensive" ? "active" : ""
+            }`}
+            onClick={() => setCoverageType("comprehensive")}
+            type="button"
+          >
+            Comprehensive
+          </button>
+          <button
+            className={`tab ${coverageType === "fireTheft" ? "active" : ""}`}
+            onClick={() => setCoverageType("fireTheft")}
+            type="button"
+          >
+            Fire & Theft
+          </button>
+          <button
+            className={`tab ${coverageType === "thirdParty" ? "active" : ""}`}
+            onClick={() => setCoverageType("thirdParty")}
+            type="button"
+          >
+            Third Party
+          </button>
+        </div>
+
+        <p className="coverage-copy">{COVERAGE_COPY[coverageType]}</p>
+
         {/* Result block appears only when we have a classification */}
         {result ? (
           <div className="result-card">
@@ -145,11 +220,15 @@ export default function Insurance() {
               <span className="result-label">Confidence:</span>{" "}
               <strong>{(result.score * 100).toFixed(1)}%</strong>
             </p>
+            <p className="result-line">
+              <span className="result-label">Estimated Premium:</span>{" "}
+              <strong>{formatNZD(premium)}</strong>
+              <small className="muted"> (placeholder)</small>
+            </p>
           </div>
         ) : (
           <p className="result-placeholder">
-            Coverage tabs, classification, and premium placeholder will appear
-            here.
+            Classify a vehicle to estimate a placeholder premium.
           </p>
         )}
       </div>
