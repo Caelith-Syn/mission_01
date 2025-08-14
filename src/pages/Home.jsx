@@ -5,7 +5,6 @@ export default function Home() {
     <section className="hero">
       <div className="hero-inner container">
         <div className="hero-media">
-          {/* Royalty-free image (Unsplash) */}
           <img
             className="hero-img"
             src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80"

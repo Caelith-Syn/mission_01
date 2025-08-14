@@ -12,7 +12,12 @@ export default function Header() {
           <NavLink to="/" end>
             Home
           </NavLink>
+          <button className="nav-btn">Inventory</button>
+          <button className="nav-btn">Sell Your Car</button>
+          <button className="nav-btn">Financing</button>
           <NavLink to="/insurance">Insurance</NavLink>
+
+          <button className="nav-btn">Contact Us</button>
         </nav>
       </div>
     </header>

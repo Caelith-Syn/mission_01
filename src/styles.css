@@ -16,17 +16,18 @@ main {
 }
 
 :root {
-  --federal-blue: #03045eff;
-  --honolulu-blue: #0077b6ff;
-  --pacific-cyan: #00b4d8ff;
-  --non-photo-blue: #90e0efff;
-  --light-cyan: #caf0f8ff;
+  --federal-blue: #03045eff; /* Dark navy - for text accents */
+  --honolulu-blue: #0077b6ff; /* Medium blue - for buttons/accents */
+  --pacific-cyan: #00b4d8ff; /* Vibrant cyan - for highlights/borders */
+  --non-photo-blue: #90e0efff; /* Light blue - header/footer background */
+  --light-cyan: #caf0f8ff; /* Very light cyan - subtle highlights */
+  --white: #ffffff; /* Body background */
 }
 
 body {
   font-family: Arial, sans-serif;
-  background-color: var(--federal-blue);
-  color: var(--light-cyan);
+  background-color: var(--white);
+  color: var(--federal-blue);
   line-height: 1.5;
 }
 
@@ -38,7 +39,8 @@ body {
 }
 
 .header {
-  border-bottom: 1px solid var(--honolulu-blue);
+  background-color: var(--non-photo-blue);
+  border-bottom: 1px solid var(--pacific-cyan);
   padding: 1rem 0;
 }
 
@@ -69,7 +71,7 @@ body {
 .nav a {
   margin-left: 1rem;
   text-decoration: none;
-  color: var(--light-cyan);
+  color: var(--federal-blue);
 }
 
 /* Highlight active nav link */
@@ -83,27 +85,45 @@ body {
   text-decoration: underline;
 }
 
+/* NAV buttons in the Header (not the links) */
+/* This is my lazy quick fix which I will come back to later */
+.nav-btn {
+  background: none;
+  border: none;
+  color: var(--federal-blue);
+  font: inherit;
+  cursor: pointer;
+  margin-left: 1rem;
+}
+
+.nav-btn:hover {
+  text-decoration: underline;
+}
+
 /* HERO */
 .hero {
-  padding: 4rem 0;
-  background: var(--non-photo-blue);
+  padding: 5rem 0;
+  background: var(--white);
   color: var(--federal-blue);
 }
 .hero-inner {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
-  gap: 2rem;
+  gap: 3rem;
   align-items: center;
 }
 .hero-copy h1 {
   font-size: clamp(2rem, 4vw, 3rem);
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 .hero-copy p {
   max-width: 52ch;
   opacity: 0.9;
+  margin-bottom: 1.5rem;
 }
 .hero-cta {
+  background: var(--honolulu-blue);
+  color: var(--white);
   margin-top: 1rem;
 }
 
@@ -127,8 +147,8 @@ body {
   border: 1px solid var(--pacific-cyan);
   border-radius: 6px;
   text-decoration: none;
-  background: var(--honolulu-blue);
-  color: var(--light-cyan);
+  background: var(--pacific-cyan);
+  color: var(--federal-blue);
 }
 
 .btn:hover,
@@ -137,11 +157,34 @@ body {
 }
 
 .footer {
-  border-top: 1px solid var(--honolulu-blue);
+  border-top: 1px solid var(--pacific-cyan);
   padding: 1rem 0;
-  color: var(--pacific-cyan);
+  color: var(--federal-blue);
   text-align: center;
-  background: var(--federal-blue);
+  background-color: var(--non-photo-blue);
+}
+
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.footer-links {
+  display: flex;
+  gap: 1rem;
+}
+.footer-btn {
+  background: none;
+  border: none;
+  color: var(--federal-blue);
+  cursor: pointer;
+}
+.footer-btn:hover {
+  text-decoration: underline;
+}
+.footer-copy {
+  margin-top: 0.5rem;
 }
 
 /* Insurance Page Panel Container */
@@ -154,11 +197,11 @@ body {
 
 /* Insurance Page Panels */
 .panel {
-  background-color: var(--honolulu-blue);
+  background-color: var(--white);
   border: 1px solid var(--pacific-cyan);
   border-radius: 8px;
   padding: 1rem;
-  color: var(--light-cyan);
+  color: var(--federal-blue);
 }
 
 .upload-controls {
@@ -227,7 +270,7 @@ body {
 .tab {
   border: 1px solid var(--pacific-cyan);
   background: transparent;
-  color: var(--light-cyan);
+  color: var(--pacific-cyan);
   padding: 0.4rem 0.7rem;
   border-radius: 6px;
   cursor: pointer;
