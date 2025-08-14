@@ -50,8 +50,20 @@ body {
 
 .brand {
   font-weight: bold;
-  text-decoration: none;
   color: var(--non-photo-blue);
+}
+
+.brand-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.brand-logo {
+  width: auto;
+  height: 2.5rem;
+  display: block;
 }
 
 .nav a {
