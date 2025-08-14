@@ -14,4 +14,9 @@ and display relevant insurance information.
 
 ## Status
 
-Project scaffolding in progress.
+Functional prototype completed.  
+Features include:
+
+- Vehicle image upload and preview
+- Azure Custom Vision integration for classification
+- UI layout based on custom wireframe
